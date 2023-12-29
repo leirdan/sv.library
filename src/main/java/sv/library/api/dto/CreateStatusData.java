@@ -1,6 +1,8 @@
 package sv.library.api.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record CreateStatusData(
-        String description
+        @NotBlank String description
 ) {
 }

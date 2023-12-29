@@ -1,6 +1,7 @@
 package sv.library.api.controller;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class GenreController {
 
     @PostMapping
     @Transactional
-    public void Create(@RequestBody CreateGenreData data) {
+    public void Create(@RequestBody @Valid CreateGenreData data) {
         _genreRepository.save(new Genre(data.description()));
     }
 }

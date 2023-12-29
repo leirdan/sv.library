@@ -1,6 +1,7 @@
 package sv.library.api.controller;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class BooksController {
 
     @PostMapping
     @Transactional
-    public void Insert(@RequestBody CreateBookData data) {
+    public void Insert(@RequestBody @Valid CreateBookData data) {
         Genre g = _genreRepository.findById(data.genreId()).orElse(null);
         Status s = _statusRepository.findById(data.statusId()).orElse(null);
         Book book = new Book(data, null, s, g);
