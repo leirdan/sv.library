@@ -3,6 +3,8 @@ package sv.library.api.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Status;
@@ -26,6 +28,13 @@ public class BooksController {
     @Autowired
     private IStatusRepository _statusRepository;
 
+    @GetMapping
+    public Page<BookData> Index(Pageable page) {
+        return _bookRepository
+                .findAll(page)
+                .map(BookData::new);
+    }
+
     @PostMapping
     @Transactional
     public void Create(@RequestBody @Valid CreateBookData data) {
@@ -33,14 +42,5 @@ public class BooksController {
         Status s = _statusRepository.findById(data.statusId()).orElse(null);
         Book book = new Book(data, null, s, g);
         _bookRepository.save(book);
-    }
-
-    @GetMapping
-    public List<BookData> Index() {
-        return _bookRepository
-                .findAll()
-                .stream()
-                .map(BookData::new)
-                .collect(Collectors.toList());
     }
 }
