@@ -3,6 +3,7 @@ package sv.library.api.dto;
 import sv.library.api.domain.Book;
 
 public record BookData(
+        Long id,
         String title,
         String author,
         String publisher,
@@ -11,7 +12,8 @@ public record BookData(
         String status
 ) {
     public BookData(Book book) {
-        this(book.getTitle(),
+        this(book.getId(),
+                book.getTitle(),
                 book.getAuthor(),
                 book.getPublisher(),
                 book.getYear(),
