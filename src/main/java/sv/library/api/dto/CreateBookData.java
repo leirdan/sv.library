@@ -1,12 +1,12 @@
-package sv.library.api.books.dto;
+package sv.library.api.dto;
 
 public record CreateBookData(
         String title,
         String author,
         String publisher,
         String year,
-        long genreId,
-        long userId,
-        long statusId
+        Long genreId,
+        Long userId,
+        Long statusId
         ) {
 }
