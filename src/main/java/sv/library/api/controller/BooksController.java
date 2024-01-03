@@ -5,19 +5,23 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Genre;
 import sv.library.api.domain.Status;
 import sv.library.api.domain.User;
 import sv.library.api.dto.BookData;
 import sv.library.api.dto.CreateBookData;
+import sv.library.api.dto.DetailsBookData;
 import sv.library.api.dto.UpdateBookData;
 import sv.library.api.services.IBookRepository;
 import sv.library.api.services.IGenreRepository;
 import sv.library.api.services.IStatusRepository;
 import sv.library.api.services.IUserRepository;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 
 @RestController
@@ -33,27 +37,50 @@ public class BooksController {
     private IUserRepository _userRepository;
 
     @GetMapping
-    public Page<BookData> Index(Pageable page) {
-        return _bookRepository
+    public ResponseEntity<Page<BookData>> Index(Pageable page) {
+        Page<BookData> books = _bookRepository
                 .findAllByActiveTrue(page)
                 .map(BookData::new);
+
+        return ResponseEntity.ok(books);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<BookData> GetOne(@PathVariable Long id) {
+        Book book = _bookRepository.getReferenceById(id);
+        if (book.isActive()) {
+            return ResponseEntity.ok(new BookData(book));
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping
     @Transactional
-    public void Create(@RequestBody @Valid CreateBookData data) {
-        Genre g = _genreRepository.findById(data.genreId()).orElse(null);
-        Status s = _statusRepository.findById(data.statusId()).orElse(null);
-        Book book = new Book(data, null, s, g);
-        _bookRepository.save(book);
+    public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
+        try {
+            Genre g = _genreRepository.findById(data.genreId()).orElse(null);
+            Status s = _statusRepository.findById(data.statusId()).orElse(null);
+            User u = _userRepository.findById(data.userId()).orElse(null);
+
+            Book book = new Book(data, u, s, g);
+
+            _bookRepository.save(book);
+
+            URI uri = builder.path("/livros/{id}").buildAndExpand(book.getId()).toUri();
+
+            return ResponseEntity.created(uri).body(new DetailsBookData(book));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e);
+        }
     }
 
     @PutMapping
     @Transactional
-    public void Update(@RequestBody @Valid UpdateBookData data) {
+    public ResponseEntity Update(@RequestBody @Valid UpdateBookData data) {
         int changes = 0;
         Book book = _bookRepository.getReferenceById(data.id());
         if (book == null) {
+            return ResponseEntity.badRequest().body("Não há livro com esse id.");
         } else {
             if (data.title() != null && data.title() != "") {
                 book.setTitle(data.title());
@@ -96,14 +123,17 @@ public class BooksController {
             if (changes > 0) {
                 book.setUpdatedAt(LocalDateTime.now());
             }
+
+            return ResponseEntity.ok(new DetailsBookData(book));
         }
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void Delete(@PathVariable Long id) {
+    public ResponseEntity Delete(@PathVariable Long id) {
         Book book = _bookRepository.getReferenceById(id);
         book.setActive(false);
+        return ResponseEntity.noContent().build();
     }
 
 }
