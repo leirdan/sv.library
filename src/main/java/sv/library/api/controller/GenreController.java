@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import sv.library.api.domain.Genre;
 import sv.library.api.dto.CreateGenreData;
 import sv.library.api.dto.GenreData;
+import sv.library.api.dto.UpdateGenreData;
 import sv.library.api.services.IGenreRepository;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/generos")
@@ -28,5 +31,18 @@ public class GenreController {
     @Transactional
     public void Create(@RequestBody @Valid CreateGenreData data) {
         _genreRepository.save(new Genre(data.description()));
+    }
+
+    @PutMapping
+    @Transactional
+    public void Update(@RequestBody UpdateGenreData data) {
+        Genre genre = _genreRepository.getReferenceById(data.id());
+        if (genre != null) {
+            if (data.description() != null && data.description() != "") {
+                genre.setDescription(data.description());
+                genre.setUpdatedAt(LocalDateTime.now());
+            }
+        }
+        else {}
     }
 }
