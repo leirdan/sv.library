@@ -44,34 +44,32 @@ public class BooksController {
 
         return ResponseEntity.ok(books);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<BookData> GetOne(@PathVariable Long id) {
         Book book = _bookRepository.getReferenceById(id);
+
         if (book.isActive()) {
             return ResponseEntity.ok(new BookData(book));
         }
+
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
-        try {
-            Genre g = _genreRepository.findById(data.genreId()).orElse(null);
-            Status s = _statusRepository.findById(data.statusId()).orElse(null);
-            User u = _userRepository.findById(data.userId()).orElse(null);
+        Genre g = _genreRepository.findById(data.genreId()).orElse(null);
+        Status s = _statusRepository.findById(data.statusId()).orElse(null);
+        User u = _userRepository.findById(data.userId()).orElse(null);
 
-            Book book = new Book(data, u, s, g);
+        Book book = new Book(data, u, s, g);
 
-            _bookRepository.save(book);
+        _bookRepository.save(book);
 
-            URI uri = builder.path("/livros/{id}").buildAndExpand(book.getId()).toUri();
+        URI uri = builder.path("/livros/{id}").buildAndExpand(book.getId()).toUri();
 
-            return ResponseEntity.created(uri).body(new DetailsBookData(book));
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e);
-        }
+        return ResponseEntity.created(uri).body(new DetailsBookData(book));
     }
 
     @PutMapping
@@ -79,53 +77,49 @@ public class BooksController {
     public ResponseEntity Update(@RequestBody @Valid UpdateBookData data) {
         int changes = 0;
         Book book = _bookRepository.getReferenceById(data.id());
-        if (book == null) {
-            return ResponseEntity.badRequest().body("Não há livro com esse id.");
-        } else {
-            if (data.title() != null && data.title() != "") {
-                book.setTitle(data.title());
-                changes++;
-            }
-            if (data.author() != null && data.author() != "") {
-                book.setAuthor(data.author());
-                changes++;
-            }
-            if (data.publisher() != null && data.publisher() != "") {
-                book.setPublisher(data.publisher());
-                changes++;
-            }
-            if (data.year() != null && data.year() != "") {
-                book.setYear(data.year());
-                changes++;
-            }
-            if (data.userId() != null) {
-                User user = _userRepository.getReferenceById(data.userId());
-                if (user != null) {
-                    book.setUser(user);
-                    changes++;
-                }
-            }
-            if (data.genreId() != null) {
-                Genre genre = _genreRepository.getReferenceById(data.genreId());
-                if (genre != null) {
-                    book.setGenre(genre);
-                    changes++;
-                }
-            }
-            if (data.statusId() != null) {
-                Status status = _statusRepository.getReferenceById(data.statusId());
-                if (status != null) {
-                    book.setStatus(status);
-                    changes++;
-                }
-            }
-
-            if (changes > 0) {
-                book.setUpdatedAt(LocalDateTime.now());
-            }
-
-            return ResponseEntity.ok(new DetailsBookData(book));
+        if (data.title() != null && data.title() != "") {
+            book.setTitle(data.title());
+            changes++;
         }
+        if (data.author() != null && data.author() != "") {
+            book.setAuthor(data.author());
+            changes++;
+        }
+        if (data.publisher() != null && data.publisher() != "") {
+            book.setPublisher(data.publisher());
+            changes++;
+        }
+        if (data.year() != null && data.year() != "") {
+            book.setYear(data.year());
+            changes++;
+        }
+        if (data.userId() != null) {
+            User user = _userRepository.getReferenceById(data.userId());
+            if (user != null) {
+                book.setUser(user);
+                changes++;
+            }
+        }
+        if (data.genreId() != null) {
+            Genre genre = _genreRepository.getReferenceById(data.genreId());
+            if (genre != null) {
+                book.setGenre(genre);
+                changes++;
+            }
+        }
+        if (data.statusId() != null) {
+            Status status = _statusRepository.getReferenceById(data.statusId());
+            if (status != null) {
+                book.setStatus(status);
+                changes++;
+            }
+        }
+
+        if (changes > 0) {
+            book.setUpdatedAt(LocalDateTime.now());
+        }
+
+        return ResponseEntity.ok(new DetailsBookData(book));
     }
 
     @DeleteMapping("/{id}")
@@ -139,7 +133,6 @@ public class BooksController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity Activate(@PathVariable Long id) {
-        try {
         Book book = _bookRepository.getReferenceById(id);
 
         if (!book.isActive()) {
@@ -149,9 +142,6 @@ public class BooksController {
 
         return ResponseEntity.ok(new DetailsBookData(book));
 
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Não há livro com esse id.");
-        }
     }
 
 }
