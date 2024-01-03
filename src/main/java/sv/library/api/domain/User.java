@@ -29,6 +29,8 @@ public class User {
     private String gender;
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "atualizado_em")
+    private LocalDateTime updatedAt = LocalDateTime.now();
     @Column(name = "ativo")
     private boolean Active = true;
     @OneToMany(mappedBy = "user")

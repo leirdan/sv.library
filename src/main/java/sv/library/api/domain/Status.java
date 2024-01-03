@@ -1,15 +1,13 @@
 package sv.library.api.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +20,8 @@ public class Status {
     private String description;
     @Column(name = "criado_em")
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "atualizado_em")
+    private LocalDateTime updatedAt = LocalDateTime.now();
     @OneToMany(mappedBy = "status")
     private List<Book> books;
 

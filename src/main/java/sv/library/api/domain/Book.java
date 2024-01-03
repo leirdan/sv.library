@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "Livros")
 @Entity(name = "Livro")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -26,6 +27,10 @@ public class Book {
     private String year;
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "atualizado_em", nullable = false)
+    private LocalDateTime updatedAt;
+    @Column(name = "ativo")
+    private boolean Active = true;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private User user;
