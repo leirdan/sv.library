@@ -30,7 +30,7 @@ public class Book {
     @Column(name = "atualizado_em", nullable = false)
     private LocalDateTime updatedAt;
     @Column(name = "ativo")
-    private boolean Active = true;
+    private boolean active = true;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private User user;

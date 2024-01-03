@@ -35,7 +35,7 @@ public class BooksController {
     @GetMapping
     public Page<BookData> Index(Pageable page) {
         return _bookRepository
-                .findAll(page)
+                .findAllByActiveTrue(page)
                 .map(BookData::new);
     }
 
@@ -98,4 +98,12 @@ public class BooksController {
             }
         }
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void Delete(@PathVariable Long id) {
+        Book book = _bookRepository.getReferenceById(id);
+        book.setActive(false);
+    }
+
 }
