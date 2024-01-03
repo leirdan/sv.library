@@ -1,4 +1,4 @@
-package sv.library.api.dto;
+package sv.library.api.dto.books;
 
 import jakarta.validation.constraints.NotNull;
 

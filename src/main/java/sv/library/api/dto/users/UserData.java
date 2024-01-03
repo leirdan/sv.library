@@ -1,4 +1,4 @@
-package sv.library.api.dto;
+package sv.library.api.dto.users;
 
 import sv.library.api.domain.User;
 

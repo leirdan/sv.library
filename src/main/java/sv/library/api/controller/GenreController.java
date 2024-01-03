@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import sv.library.api.domain.Genre;
-import sv.library.api.dto.CreateGenreData;
-import sv.library.api.dto.GenreData;
-import sv.library.api.dto.UpdateGenreData;
+import sv.library.api.dto.genre.CreateGenreData;
+import sv.library.api.dto.genre.GenreData;
+import sv.library.api.dto.genre.UpdateGenreData;
 import sv.library.api.services.IGenreRepository;
 
 import java.time.LocalDateTime;

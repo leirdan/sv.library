@@ -7,9 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import sv.library.api.domain.Status;
-import sv.library.api.dto.CreateStatusData;
-import sv.library.api.dto.GenreData;
-import sv.library.api.dto.StatusData;
+import sv.library.api.dto.status.CreateStatusData;
+import sv.library.api.dto.status.StatusData;
 import sv.library.api.services.IStatusRepository;
 
 @RestController

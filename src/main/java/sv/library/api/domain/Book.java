@@ -2,7 +2,7 @@ package sv.library.api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import sv.library.api.dto.CreateBookData;
+import sv.library.api.dto.books.CreateBookData;
 
 import java.time.LocalDateTime;
 

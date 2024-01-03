@@ -1,4 +1,4 @@
-package sv.library.api.dto;
+package sv.library.api.dto.genre;
 
 import jakarta.validation.constraints.NotBlank;
 
