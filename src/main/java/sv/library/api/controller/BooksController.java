@@ -136,4 +136,22 @@ public class BooksController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity Activate(@PathVariable Long id) {
+        try {
+        Book book = _bookRepository.getReferenceById(id);
+
+        if (!book.isActive()) {
+            book.setActive(true);
+            book.setUpdatedAt(LocalDateTime.now());
+        }
+
+        return ResponseEntity.ok(new DetailsBookData(book));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Não há livro com esse id.");
+        }
+    }
+
 }
