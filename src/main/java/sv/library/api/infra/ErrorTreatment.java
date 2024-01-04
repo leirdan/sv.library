@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RestControllerAdvice
@@ -15,6 +16,11 @@ public class ErrorTreatment {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity Error404() {
         return ResponseEntity.notFound().build();
+    }
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity Error400(SQLIntegrityConstraintViolationException ex) {
+        String err = ex.getMessage();
+        return ResponseEntity.badRequest().body(err);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity Error400(MethodArgumentNotValidException ex) {

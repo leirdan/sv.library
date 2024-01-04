@@ -6,9 +6,8 @@ public record CreateUserData(
         @NotBlank
         String name,
         @NotBlank
-        String email,
+        String login,
         @NotBlank
-        String password,
-        String gender
+        String password
 ) {
 }

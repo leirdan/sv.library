@@ -27,6 +27,6 @@ public class UsersController {
     @PostMapping
     @Transactional
     public void Create(@RequestBody @Valid CreateUserData data) {
-        _userRepository.save(new User(data.name(), data.email(), data.password(), data.gender()));
+        _userRepository.save(new User(data.name(), data.login(), data.password()));
     }
 }

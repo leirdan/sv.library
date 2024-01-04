@@ -9,8 +9,7 @@ public record BookData(
         String publisher,
         String year,
         Long genre,
-        Long status,
-        Long user
+        Long status
 ) {
     public BookData(Book book) {
         this(book.getId(),
@@ -19,8 +18,6 @@ public record BookData(
                 book.getPublisher(),
                 book.getYear(),
                 book.getGenre() == null ? null : book.getGenre().getId(),
-                book.getStatus() == null ? null : book.getStatus().getId(),
-                book.getUser() == null ? null : book.getUser().getId()
-                );
+                book.getStatus() == null ? null : book.getStatus().getId());
     }
 }

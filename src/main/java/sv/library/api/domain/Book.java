@@ -32,22 +32,18 @@ public class Book {
     @Column(name = "ativo")
     private boolean active = true;
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private User user;
-    @ManyToOne
     @JoinColumn(name = "genero_id")
     private Genre genre;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
 
-    public Book(CreateBookData data, User user, Status status, Genre genre) {
+    public Book(CreateBookData data, Status status, Genre genre) {
         this.title = data.title();
         this.author = data.author();
         this.publisher = data.publisher();
         this.year = data.year();
         this.genre = genre;
         this.status = status;
-        this.user = user;
     }
 }

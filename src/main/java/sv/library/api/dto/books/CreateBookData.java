@@ -15,7 +15,6 @@ public record CreateBookData(
         @Max(value=2024, message="{year.invalid}")
         String year,
         Long genreId,
-        Long userId,
         Long statusId
         ) {
 }

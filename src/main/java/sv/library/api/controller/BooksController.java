@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Genre;
 import sv.library.api.domain.Status;
-import sv.library.api.domain.User;
 import sv.library.api.dto.books.BookData;
 import sv.library.api.dto.books.CreateBookData;
 import sv.library.api.dto.books.DetailsBookData;
@@ -59,11 +58,10 @@ public class BooksController {
     @PostMapping
     @Transactional
     public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
-        Genre g = _genreRepository.findById(data.genreId()).orElse(null);
-        Status s = _statusRepository.findById(data.statusId()).orElse(null);
-        User u = _userRepository.findById(data.userId()).orElse(null);
+        Genre g = _genreRepository.getReferenceById(data.genreId());
+        Status s = _statusRepository.getReferenceById(data.statusId());
 
-        Book book = new Book(data, u, s, g);
+        Book book = new Book(data, s, g);
 
         _bookRepository.save(book);
 
@@ -92,13 +90,6 @@ public class BooksController {
         if (data.year() != null && data.year() != "") {
             book.setYear(data.year());
             changes++;
-        }
-        if (data.userId() != null) {
-            User user = _userRepository.getReferenceById(data.userId());
-            if (user != null) {
-                book.setUser(user);
-                changes++;
-            }
         }
         if (data.genreId() != null) {
             Genre genre = _genreRepository.getReferenceById(data.genreId());

@@ -26,10 +26,8 @@ CREATE TABLE Livros (
                         editora VARCHAR(255),
                         ano_lancamento VARCHAR(255) NOT NULL,
                         criado_em DATETIME NOT NULL,
-                        usuario_id BIGINT,
                         genero_id BIGINT,
                         status_id BIGINT,
-                        FOREIGN KEY (usuario_id) REFERENCES Usuarios(id),
                         FOREIGN KEY (genero_id) REFERENCES Generos(id),
                         FOREIGN KEY (status_id) REFERENCES Status(id)
 );

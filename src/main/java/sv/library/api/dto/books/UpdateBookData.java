@@ -9,7 +9,6 @@ public record UpdateBookData(
         String author,
         String publisher,
         String year,
-        Long userId,
         Long genreId,
         Long statusId
 ) {
