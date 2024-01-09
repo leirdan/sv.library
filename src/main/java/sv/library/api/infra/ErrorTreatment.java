@@ -18,8 +18,9 @@ import java.util.List;
 public class ErrorTreatment {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity Error404() {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity Error404(EntityNotFoundException ex) {
+        String err = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)

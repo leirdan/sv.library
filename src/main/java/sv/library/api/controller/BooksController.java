@@ -1,5 +1,6 @@
 package sv.library.api.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,10 @@ public class BooksController {
     @PostMapping
     @Transactional
     public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
-        Genre g = _genreRepository.getReferenceById(data.genreId());
-        Status s = _statusRepository.getReferenceById(data.statusId());
+        Genre g = _genreRepository.findById(data.genreId()).orElse(null);
+        if (g == null) { throw new EntityNotFoundException("Genre doesn't exist!"); }
+        Status s = _statusRepository.findById(data.statusId()).orElse(null);
+        if (s == null) { throw new EntityNotFoundException("Status doesn't exist!"); }
 
         Book book = new Book(data, s, g);
 
