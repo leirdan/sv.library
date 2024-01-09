@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 // Pega um objeto User e retorna todos os seus detalhes
-public class RoleService implements UserDetails {
+public class UserService implements UserDetails {
     private User user;
 
     @Override

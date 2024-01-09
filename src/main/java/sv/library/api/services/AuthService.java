@@ -15,7 +15,7 @@ public class AuthService implements UserDetailsService {
     // Retorna um objeto UserDetails com base no username fornecido. Utilizado em AuthController pelo método authenticate.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = _userRepository.findByLogin(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        return new RoleService(user);
+        return new UserService(user);
     }
 }
 
