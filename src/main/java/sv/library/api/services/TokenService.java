@@ -15,12 +15,14 @@ public class TokenService {
     @Value("${svlibrary.api.security.token.secret}")
     private String key;
 
+    private final String ISSUER = "API SvLibrary";
+
     public String generateToken(UserService user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(key);
 
             return JWT.create()
-                    .withIssuer("API SvLibrary")
+                    .withIssuer(ISSUER)
                     .withSubject(user.getUsername().toString())
                     .withExpiresAt(getExpirationDate())
                     .withClaim("id", user.getUser().getId())
@@ -28,6 +30,20 @@ public class TokenService {
 
         } catch (JWTVerificationException exception) {
             throw new RuntimeException("Error while generating JWT token.");
+        }
+    }
+    public String getSubject(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(key);
+
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+        } catch (JWTVerificationException exception){
+            throw new RuntimeException("JWT Token is not valid!");
         }
     }
 
