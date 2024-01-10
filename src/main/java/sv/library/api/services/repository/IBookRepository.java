@@ -1,4 +1,4 @@
-package sv.library.api.services;
+package sv.library.api.services.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

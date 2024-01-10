@@ -2,6 +2,8 @@ package sv.library.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.NoArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,13 +15,14 @@ import sv.library.api.dto.genre.CreateGenreData;
 import sv.library.api.dto.genre.DetailsGenreData;
 import sv.library.api.dto.genre.GenreData;
 import sv.library.api.dto.genre.UpdateGenreData;
-import sv.library.api.services.IGenreRepository;
+import sv.library.api.services.repository.IGenreRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/generos")
+@NoArgsConstructor
 public class GenreController {
     @Autowired
     private IGenreRepository _genreRepository;

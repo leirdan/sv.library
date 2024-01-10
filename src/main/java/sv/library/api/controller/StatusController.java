@@ -2,6 +2,8 @@ package sv.library.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.NoArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import sv.library.api.domain.Status;
 import sv.library.api.dto.status.CreateStatusData;
 import sv.library.api.dto.status.StatusData;
-import sv.library.api.services.IStatusRepository;
+import sv.library.api.services.repository.IStatusRepository;
 
 @RestController
 @RequestMapping("/status")
+@NoArgsConstructor
 public class StatusController {
     @Autowired
     private IStatusRepository _statusRepository;

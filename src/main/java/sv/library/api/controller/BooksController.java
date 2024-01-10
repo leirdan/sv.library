@@ -3,6 +3,8 @@ package sv.library.api.controller;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.NoArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +18,17 @@ import sv.library.api.dto.books.BookData;
 import sv.library.api.dto.books.CreateBookData;
 import sv.library.api.dto.books.DetailsBookData;
 import sv.library.api.dto.books.UpdateBookData;
-import sv.library.api.services.IBookRepository;
-import sv.library.api.services.IGenreRepository;
-import sv.library.api.services.IStatusRepository;
-import sv.library.api.services.IUserRepository;
+import sv.library.api.services.repository.IBookRepository;
+import sv.library.api.services.repository.IGenreRepository;
+import sv.library.api.services.repository.IStatusRepository;
+import sv.library.api.services.repository.IUserRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/livros")
+@NoArgsConstructor
 public class BooksController {
     @Autowired
     private IBookRepository _bookRepository;
