@@ -1,6 +1,8 @@
 package sv.library.api.infra;
 
 import jakarta.persistence.EntityNotFoundException;
+import sv.library.api.utils.exceptions.ElementNotFoundOnDBException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,35 +20,40 @@ import java.util.List;
 public class ErrorTreatment {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity Error404(EntityNotFoundException ex) {
+    public ResponseEntity<String> Error404(EntityNotFoundException ex) {
         String err = ex.getMessage();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity Error400(SQLIntegrityConstraintViolationException ex) {
+    public ResponseEntity<String> Error400(SQLIntegrityConstraintViolationException ex) {
         String err = ex.getMessage();
         return ResponseEntity.badRequest().body(err);
     }
 
+    @ExceptionHandler(ElementNotFoundOnDBException.class)
+    public ResponseEntity<String> Error400(ElementNotFoundOnDBException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity Error400InvalidArgument(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<ErrorData>> Error400InvalidArgument(MethodArgumentNotValidException ex) {
         List<FieldError> errors = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(errors.stream().map(ErrorData::new).toList());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity Error401InvalidCredentials() {
+    public ResponseEntity<String> Error401InvalidCredentials() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity Error401AuthFailed() {
+    public ResponseEntity<String> Error401AuthFailed() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed.");
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity Error403() {
+    public ResponseEntity<String> Error403() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
     }
 
