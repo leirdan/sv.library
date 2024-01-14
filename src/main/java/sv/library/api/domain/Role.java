@@ -2,6 +2,7 @@ package sv.library.api.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sv.library.api.utils.RoleName;
@@ -11,6 +12,7 @@ import sv.library.api.utils.RoleName;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class Role {
 
     @Id

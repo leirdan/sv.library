@@ -14,29 +14,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@NoArgsConstructor
+@AllArgsConstructor
 // Configurações do Spring Security
 public class SecurityConfiguration {
     @Autowired
     private FilterConfiguration _filterConfiguration;
 
     public static final String[] ENDPOINTS_WITH_NO_AUTHENTICATION = {
-            "/auth"
+            "/auth/login",
+            "/auth/cadastro",
+
     };
+
+    public static final String[] ENDPOINTS_EMPLOYEE = {
+            "/usuarios",
+            "/status"
+    };
+
     @Bean
     public SecurityFilterChain security(HttpSecurity http) throws Exception {
         return http.csrf(c -> c.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(r -> {
-                    r.requestMatchers(HttpMethod.POST, "/auth").permitAll();
+                    r.requestMatchers(ENDPOINTS_WITH_NO_AUTHENTICATION).permitAll();
+                    r.requestMatchers(ENDPOINTS_EMPLOYEE).hasRole("EMPLOYEE");
                     r.anyRequest().authenticated();
                 })
                 .addFilterBefore(_filterConfiguration, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-    // Configuração da injeção de dependência de AuthenticationManager no AuthController
+    // Configuração da injeção de dependência de AuthenticationManager no
+    // AuthController
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

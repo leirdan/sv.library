@@ -3,6 +3,9 @@ package sv.library.api.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+
+import sv.library.api.services.impl.UserDetailsImpl;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ public class TokenService {
 
     private final String ISSUER = "API SvLibrary";
 
-    public String generateToken(UserService user) {
+    public String generateToken(UserDetailsImpl user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(key);
 

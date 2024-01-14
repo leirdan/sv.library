@@ -1,4 +1,4 @@
-package sv.library.api.services;
+package sv.library.api.services.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 // Pega um objeto User e retorna todos os seus detalhes
-public class UserService implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private User user;
 
     @Override
