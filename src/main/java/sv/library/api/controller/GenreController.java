@@ -48,7 +48,8 @@ public class GenreController {
     @PostMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Create(@RequestBody @Valid CreateGenreData data, UriComponentsBuilder builder) {
+    public ResponseEntity<DetailsGenreData> Create(@RequestBody @Valid CreateGenreData data,
+            UriComponentsBuilder builder) {
         Genre genre = new Genre(data.description());
 
         _genreRepository.save(genre);
@@ -61,7 +62,7 @@ public class GenreController {
     @PutMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Update(@RequestBody UpdateGenreData data) {
+    public ResponseEntity<DetailsGenreData> Update(@RequestBody UpdateGenreData data) {
         Genre genre = _genreRepository.getReferenceById(data.id());
         if (genre != null) {
             if (data.description() != null && data.description() != "") {

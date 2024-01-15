@@ -1,7 +1,7 @@
-package sv.library.api.services.validations;
+package sv.library.api.services.validations.interfaces;
 
 import sv.library.api.dto.loans.CreateLoanDTO;
 
-public interface IValidator {
+public interface IValidatorLoan {
     void validate(CreateLoanDTO data);
 }

@@ -15,8 +15,8 @@ import sv.library.api.dto.loans.IndexLoanDTO;
 import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.repository.ILoanRepository;
 import sv.library.api.services.repository.IUserRepository;
-import sv.library.api.services.validations.IValidator;
 import sv.library.api.services.validations.ValidateDuplicateLoan;
+import sv.library.api.services.validations.interfaces.IValidatorLoan;
 
 @Service
 public class BookLoanService {
@@ -27,7 +27,7 @@ public class BookLoanService {
     @Autowired
     private ILoanRepository loanRepository;
     @Autowired
-    private List<IValidator> validators;
+    private List<IValidatorLoan> validators;
 
     public IndexLoanDTO lendBook(CreateLoanDTO data) {
         // Injeção de todos os validadores. Faz todas as validações das regras de

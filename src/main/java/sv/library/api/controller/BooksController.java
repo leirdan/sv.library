@@ -1,6 +1,5 @@
 package sv.library.api.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -20,10 +19,10 @@ import sv.library.api.dto.books.BookData;
 import sv.library.api.dto.books.CreateBookData;
 import sv.library.api.dto.books.DetailsBookData;
 import sv.library.api.dto.books.UpdateBookData;
+import sv.library.api.services.BookService;
 import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.repository.IGenreRepository;
 import sv.library.api.services.repository.IStatusRepository;
-import sv.library.api.services.repository.IUserRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -33,17 +32,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BooksController {
     @Autowired
-    private IBookRepository _bookRepository;
+    private IBookRepository bookRepository;
     @Autowired
-    private IGenreRepository _genreRepository;
+    private IGenreRepository genreRepository;
     @Autowired
-    private IStatusRepository _statusRepository;
+    private IStatusRepository statusRepository;
     @Autowired
-    private IUserRepository _userRepository;
+    private BookService bookService;
 
     @GetMapping
     public ResponseEntity<Page<BookData>> Index(Pageable page) {
-        Page<BookData> books = _bookRepository
+        Page<BookData> books = bookRepository
                 .findAllByActiveTrue(page)
                 .map(BookData::new);
 
@@ -52,7 +51,7 @@ public class BooksController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookData> GetOne(@PathVariable Long id) {
-        Book book = _bookRepository.getReferenceById(id);
+        Book book = bookRepository.getReferenceById(id);
 
         if (book.isActive()) {
             return ResponseEntity.ok(new BookData(book));
@@ -64,19 +63,9 @@ public class BooksController {
     @PostMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
-        Genre g = _genreRepository.findById(data.genreId()).orElse(null);
-        if (g == null) {
-            throw new EntityNotFoundException("Genre doesn't exist!");
-        }
-        Status s = _statusRepository.findById(data.statusId()).orElse(null);
-        if (s == null) {
-            throw new EntityNotFoundException("Status doesn't exist!");
-        }
-
-        Book book = new Book(data, s, g);
-
-        _bookRepository.save(book);
+    public ResponseEntity<DetailsBookData> Create(@RequestBody @Valid CreateBookData data,
+            UriComponentsBuilder builder) {
+        Book book = bookService.create(data);
 
         URI uri = builder.path("/livros/{id}").buildAndExpand(book.getId()).toUri();
 
@@ -88,7 +77,7 @@ public class BooksController {
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity Update(@RequestBody @Valid UpdateBookData data) {
         int changes = 0;
-        Book book = _bookRepository.getReferenceById(data.id());
+        Book book = bookRepository.getReferenceById(data.id());
         if (data.title() != null && data.title() != "") {
             book.setTitle(data.title());
             changes++;
@@ -106,14 +95,14 @@ public class BooksController {
             changes++;
         }
         if (data.genreId() != null) {
-            Genre genre = _genreRepository.getReferenceById(data.genreId());
+            Genre genre = genreRepository.getReferenceById(data.genreId());
             if (genre != null) {
                 book.setGenre(genre);
                 changes++;
             }
         }
         if (data.statusId() != null) {
-            Status status = _statusRepository.getReferenceById(data.statusId());
+            Status status = statusRepository.getReferenceById(data.statusId());
             if (status != null) {
                 book.setStatus(status);
                 changes++;
@@ -130,8 +119,8 @@ public class BooksController {
     @DeleteMapping("/{id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Delete(@PathVariable Long id) {
-        Book book = _bookRepository.getReferenceById(id);
+    public ResponseEntity<Void> Delete(@PathVariable Long id) {
+        Book book = bookRepository.getReferenceById(id);
         book.setActive(false);
         return ResponseEntity.noContent().build();
     }
@@ -139,8 +128,8 @@ public class BooksController {
     @PutMapping("/{id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Activate(@PathVariable Long id) {
-        Book book = _bookRepository.getReferenceById(id);
+    public ResponseEntity<DetailsBookData> Activate(@PathVariable Long id) {
+        Book book = bookRepository.getReferenceById(id);
 
         if (!book.isActive()) {
             book.setActive(true);

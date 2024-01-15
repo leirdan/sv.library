@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component;
 
 import sv.library.api.dto.loans.CreateLoanDTO;
 import sv.library.api.services.repository.IBookRepository;
+import sv.library.api.services.validations.interfaces.IValidatorLoan;
 import sv.library.api.utils.exceptions.ElementNotFoundOnDBException;
 
 @Component
-public class ValidateExistingBook implements IValidator {
+public class ValidateExistingBook implements IValidatorLoan {
     @Autowired
     private IBookRepository bookRepository;
 

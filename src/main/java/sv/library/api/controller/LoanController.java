@@ -30,7 +30,7 @@ public class LoanController {
 
     @PostMapping("/recebimento")
     @Transactional
-    public ResponseEntity writeOff(@RequestBody @Valid CreateLoanDTO data) {
+    public ResponseEntity<Void> writeOff(@RequestBody @Valid CreateLoanDTO data) {
         loanService.writeOffLoan(data);
         return ResponseEntity.noContent().build();
     }
