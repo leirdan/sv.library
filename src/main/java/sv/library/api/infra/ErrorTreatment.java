@@ -1,6 +1,7 @@
 package sv.library.api.infra;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
 import sv.library.api.utils.exceptions.ElementNotFoundOnDBException;
 
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class ErrorTreatment {
     public ResponseEntity<String> Error400(SQLIntegrityConstraintViolationException ex) {
         String err = ex.getMessage();
         return ResponseEntity.badRequest().body(err);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> Error400(ValidationException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(ElementNotFoundOnDBException.class)

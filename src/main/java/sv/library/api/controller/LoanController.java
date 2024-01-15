@@ -19,8 +19,8 @@ public class LoanController {
     private BookLoanService loanService;
 
     @PostMapping
-    public ResponseEntity lend(@RequestBody @Valid CreateLoanDTO data) {
-        loanService.lendBook(data);
-        return ResponseEntity.ok(new IndexLoanDTO(null, null, null, null, null));
+    public ResponseEntity<IndexLoanDTO> lend(@RequestBody @Valid CreateLoanDTO data) {
+        IndexLoanDTO loan = loanService.lendBook(data);
+        return ResponseEntity.ok(loan);
     }
 }
