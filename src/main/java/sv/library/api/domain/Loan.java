@@ -40,6 +40,8 @@ public class Loan {
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(name = "devolvido")
     private boolean returned = false;
+    @Column(name = "data_devolucao")
+    private LocalDateTime devolutionDate;
     @Column(name = "ativo")
     private boolean active = true;
 }

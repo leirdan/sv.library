@@ -13,8 +13,7 @@ public class ValidateDuplicateLoan implements IValidator {
     private ILoanRepository loanRepository;
 
     public void validate(CreateLoanDTO data) {
-        if (loanRepository.existsDuplicatedLoan(Integer.parseInt(data.bookId().toString()),
-                Integer.parseInt(data.userId().toString())) != 0) {
+        if (loanRepository.findLoanIdByUserAndBookIds(data.bookId(), data.userId()) != null) {
             throw new ValidationException("The user already has already borrowed the book!");
         }
     }

@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.Valid;
+import lombok.val;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Loan;
 import sv.library.api.domain.User;
@@ -15,6 +17,7 @@ import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.repository.ILoanRepository;
 import sv.library.api.services.repository.IUserRepository;
 import sv.library.api.services.validations.IValidator;
+import sv.library.api.services.validations.ValidateDuplicateLoan;
 import sv.library.api.utils.exceptions.ElementNotFoundOnDBException;
 
 @Service
@@ -43,10 +46,19 @@ public class BookLoanService {
                 LocalDateTime.now().plusDays(15),
                 LocalDateTime.now(),
                 false,
+                null,
                 true);
 
         loanRepository.save(loan);
 
         return new IndexLoanDTO(loan);
+    }
+
+    public void writeOffLoan(@Valid CreateLoanDTO data) {
+        validators.removeIf(x -> x.getClass() == ValidateDuplicateLoan.class);
+        validators.forEach(v -> v.validate(data));
+        Long id = loanRepository.findLoanIdByUserAndBookIds(data.bookId(), data.userId());
+
+        loanRepository.registerDevolution(id);
     }
 }
