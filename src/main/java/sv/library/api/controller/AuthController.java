@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import sv.library.api.dto.users.CreateUserData;
 import sv.library.api.infra.SecurityConfiguration;
 import sv.library.api.services.TokenService;
 import sv.library.api.services.impl.UserDetailsImpl;
+import sv.library.api.services.repository.IRoleRepository;
 import sv.library.api.services.repository.IUserRepository;
 
 @RestController
@@ -32,20 +34,22 @@ import sv.library.api.services.repository.IUserRepository;
 @NoArgsConstructor
 public class AuthController {
     @Autowired
-    private AuthenticationManager _authManager;
+    private AuthenticationManager authManager;
     @Autowired
-    private TokenService _tokenService;
+    private TokenService tokenService;
     @Autowired
-    private SecurityConfiguration _securityConfig;
+    private SecurityConfiguration securityConfig;
     @Autowired
-    private IUserRepository _userRepository;
+    private IUserRepository userRepository;
+    @Autowired
+    private IRoleRepository roleRepository;
 
     @PostMapping("/login")
     public ResponseEntity<TokenData> login(@RequestBody @Valid CreateLoginData data) {
         var authToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        Authentication auth = _authManager.authenticate(authToken);
+        Authentication auth = authManager.authenticate(authToken);
 
-        String jwtToken = _tokenService.generateToken((UserDetailsImpl) auth.getPrincipal());
+        String jwtToken = tokenService.generateToken((UserDetailsImpl) auth.getPrincipal());
         System.out.println(jwtToken);
 
         return ResponseEntity.ok(new TokenData(jwtToken));
@@ -54,18 +58,19 @@ public class AuthController {
     @PostMapping("/cadastro")
     @Transactional
     public void register(@RequestBody @Valid CreateUserData data) {
-        User user = User
+        List<Role> roles = new ArrayList<Role>();
+        Role role = roleRepository.findByName(data.role());
+        roles.add(role);
+
+        User newUser = User
                 .builder()
                 .name(data.name())
                 .login(data.login())
-                .password(_securityConfig.encoder().encode(data.password()))
-                .roles(List.of(Role
-                        .builder()
-                        .name(data.role())
-                        .build()))
+                .password(securityConfig.encoder().encode(data.password()))
+                .roles(roles)
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        _userRepository.save(user);
+        userRepository.save(newUser);
     }
 }
