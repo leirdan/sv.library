@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sv.library.api.dto.users.UserData;
 import sv.library.api.services.repository.IUserRepository;
 
 @RestController
 @RequestMapping("/usuarios")
 @NoArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class UsersController {
     @Autowired
     private IUserRepository _userRepository;

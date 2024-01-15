@@ -29,7 +29,9 @@ public class SecurityConfiguration {
     public static final String[] ENDPOINTS_WITH_NO_AUTHENTICATION = {
             "/auth/login",
             "/auth/cadastro",
-
+            "swagger-ui.html",
+            "swagger-ui/**",
+            "v3/api-docs/**"
     };
 
     public static final String[] ENDPOINTS_EMPLOYEE = {
@@ -43,6 +45,7 @@ public class SecurityConfiguration {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(r -> {
                     r.requestMatchers(ENDPOINTS_WITH_NO_AUTHENTICATION).permitAll();
+                    r.requestMatchers(HttpMethod.GET, "/livros/**").permitAll();
                     r.requestMatchers(ENDPOINTS_EMPLOYEE).hasRole("EMPLOYEE");
                     r.anyRequest().authenticated();
                 })

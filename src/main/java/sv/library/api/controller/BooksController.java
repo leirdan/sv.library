@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Genre;
 import sv.library.api.domain.Status;
@@ -61,11 +63,16 @@ public class BooksController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity Create(@RequestBody @Valid CreateBookData data, UriComponentsBuilder builder) {
         Genre g = _genreRepository.findById(data.genreId()).orElse(null);
-        if (g == null) { throw new EntityNotFoundException("Genre doesn't exist!"); }
+        if (g == null) {
+            throw new EntityNotFoundException("Genre doesn't exist!");
+        }
         Status s = _statusRepository.findById(data.statusId()).orElse(null);
-        if (s == null) { throw new EntityNotFoundException("Status doesn't exist!"); }
+        if (s == null) {
+            throw new EntityNotFoundException("Status doesn't exist!");
+        }
 
         Book book = new Book(data, s, g);
 
@@ -78,6 +85,7 @@ public class BooksController {
 
     @PutMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity Update(@RequestBody @Valid UpdateBookData data) {
         int changes = 0;
         Book book = _bookRepository.getReferenceById(data.id());
@@ -121,6 +129,7 @@ public class BooksController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity Delete(@PathVariable Long id) {
         Book book = _bookRepository.getReferenceById(id);
         book.setActive(false);
@@ -129,6 +138,7 @@ public class BooksController {
 
     @PutMapping("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity Activate(@PathVariable Long id) {
         Book book = _bookRepository.getReferenceById(id);
 

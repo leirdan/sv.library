@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
-import lombok.val;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Loan;
 import sv.library.api.domain.User;
@@ -18,7 +17,6 @@ import sv.library.api.services.repository.ILoanRepository;
 import sv.library.api.services.repository.IUserRepository;
 import sv.library.api.services.validations.IValidator;
 import sv.library.api.services.validations.ValidateDuplicateLoan;
-import sv.library.api.utils.exceptions.ElementNotFoundOnDBException;
 
 @Service
 public class BookLoanService {
