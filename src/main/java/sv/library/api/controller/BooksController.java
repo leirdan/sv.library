@@ -42,11 +42,11 @@ public class BooksController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookData> GetOne(@PathVariable Long id) {
+    public ResponseEntity<DetailsBookData> GetOne(@PathVariable Long id) {
         Book book = bookRepository.getReferenceById(id);
 
         if (book.isActive()) {
-            return ResponseEntity.ok(new BookData(book));
+            return ResponseEntity.ok(new DetailsBookData(book));
         }
 
         return ResponseEntity.ok().build();

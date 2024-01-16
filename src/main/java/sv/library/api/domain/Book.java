@@ -17,13 +17,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "titulo", nullable=false)
+    @Column(name = "titulo", nullable = false)
     private String title;
-    @Column(name = "autor", nullable=false)
+    @Column(name = "autor", nullable = false)
     private String author;
-    @Column(name = "editora", nullable=true)
+    @Column(name = "editora", nullable = true)
     private String publisher;
-    @Column(name = "ano_lancamento", nullable=false)
+    @Column(name = "ano_lancamento", nullable = false)
     private String year;
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
