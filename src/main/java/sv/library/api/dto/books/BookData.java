@@ -8,9 +8,8 @@ public record BookData(
         String author,
         String publisher,
         String year,
-        Long genre,
-        Long status
-) {
+        Long genreId,
+        Long statusId) {
     public BookData(Book book) {
         this(book.getId(),
                 book.getTitle(),

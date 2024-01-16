@@ -13,16 +13,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sv.library.api.domain.Book;
-import sv.library.api.domain.Genre;
-import sv.library.api.domain.Status;
 import sv.library.api.dto.books.BookData;
 import sv.library.api.dto.books.CreateBookData;
 import sv.library.api.dto.books.DetailsBookData;
 import sv.library.api.dto.books.UpdateBookData;
 import sv.library.api.services.BookService;
 import sv.library.api.services.repository.IBookRepository;
-import sv.library.api.services.repository.IGenreRepository;
-import sv.library.api.services.repository.IStatusRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -33,10 +29,6 @@ import java.time.LocalDateTime;
 public class BooksController {
     @Autowired
     private IBookRepository bookRepository;
-    @Autowired
-    private IGenreRepository genreRepository;
-    @Autowired
-    private IStatusRepository statusRepository;
     @Autowired
     private BookService bookService;
 
@@ -75,44 +67,8 @@ public class BooksController {
     @PutMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity Update(@RequestBody @Valid UpdateBookData data) {
-        int changes = 0;
-        Book book = bookRepository.getReferenceById(data.id());
-        if (data.title() != null && data.title() != "") {
-            book.setTitle(data.title());
-            changes++;
-        }
-        if (data.author() != null && data.author() != "") {
-            book.setAuthor(data.author());
-            changes++;
-        }
-        if (data.publisher() != null && data.publisher() != "") {
-            book.setPublisher(data.publisher());
-            changes++;
-        }
-        if (data.year() != null && data.year() != "") {
-            book.setYear(data.year());
-            changes++;
-        }
-        if (data.genreId() != null) {
-            Genre genre = genreRepository.getReferenceById(data.genreId());
-            if (genre != null) {
-                book.setGenre(genre);
-                changes++;
-            }
-        }
-        if (data.statusId() != null) {
-            Status status = statusRepository.getReferenceById(data.statusId());
-            if (status != null) {
-                book.setStatus(status);
-                changes++;
-            }
-        }
-
-        if (changes > 0) {
-            book.setUpdatedAt(LocalDateTime.now());
-        }
-
+    public ResponseEntity<DetailsBookData> Update(@RequestBody @Valid UpdateBookData data) {
+        Book book = bookService.update(data);
         return ResponseEntity.ok(new DetailsBookData(book));
     }
 

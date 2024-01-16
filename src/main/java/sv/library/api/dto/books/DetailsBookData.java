@@ -13,9 +13,8 @@ public record DetailsBookData(
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         boolean active,
-        Long genre,
-        Long status
-        ) {
+        Long genreId,
+        Long statusId) {
     public DetailsBookData(Book book) {
         this(
                 book.getId(),
@@ -27,7 +26,6 @@ public record DetailsBookData(
                 book.getUpdatedAt(),
                 book.isActive(),
                 book.getGenre() == null ? null : book.getGenre().getId(),
-                book.getStatus() == null ? null: book.getStatus().getId()
-        );
+                book.getStatus() == null ? null : book.getStatus().getId());
     }
 }
