@@ -20,9 +20,9 @@ public class Database {
 
     public static List<Genre> loadGenres() {
         List<Genre> genres = new ArrayList<>();
-        genres.add(new Genre(Long.parseLong("1"), "Fantasia", LocalDateTime.now(), null, null));
-        genres.add(new Genre(Long.parseLong("2"), "Terror", LocalDateTime.now(), null, null));
-        genres.add(new Genre(Long.parseLong("3"), "Comédia", LocalDateTime.now(), null, null));
+        genres.add(new Genre(1L, "Fantasia", LocalDateTime.now(), null, null));
+        genres.add(new Genre(2L, "Terror", LocalDateTime.now(), null, null));
+        genres.add(new Genre(3L, "Comédia", LocalDateTime.now(), null, null));
 
         return genres;
     }
@@ -32,10 +32,10 @@ public class Database {
         List<Status> status = loadStatus();
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book(Long.parseLong("1"), "A Crônica do Matador do Rei", "Patrick Rothfuss", "Editora Arqueiro",
+        books.add(new Book(1L, "A Crônica do Matador do Rei", "Patrick Rothfuss", "Editora Arqueiro",
                 "2009",
                 LocalDateTime.now(), null, true, genres.get(0), status.get(0)));
-        books.add(new Book(Long.parseLong("2"), "O Iluminado", "Stephen King", "Rocco", "1970", LocalDateTime.now(),
+        books.add(new Book(2L, "O Iluminado", "Stephen King", "Rocco", "1970", LocalDateTime.now(),
                 null, true,
                 genres.get(1), status.get(0)));
 
@@ -44,16 +44,16 @@ public class Database {
 
     public static List<User> loadUsers() {
         List<User> users = new ArrayList<>();
-        users.add(new User(Long.parseLong("1"), "zayn", "nyaz", "192012", LocalDateTime.now(), null, true, null));
-        users.add(new User(Long.parseLong("2"), "louis", "iouls", "102913", LocalDateTime.now(), null, true, null));
+        users.add(new User(1L, "zayn", "nyaz", "192012", LocalDateTime.now(), null, true, null));
+        users.add(new User(2L, "louis", "iouls", "102913", LocalDateTime.now(), null, true, null));
 
         return users;
     }
 
     public static List<Status> loadStatus() {
         List<Status> status = new ArrayList<Status>();
-        status.add(new Status(Long.parseLong("1"), "Disponível", LocalDateTime.now(), null, null));
-        status.add(new Status(Long.parseLong("2"), "Indisponível", LocalDateTime.now(), null, null));
+        status.add(new Status(1L, "Disponível", LocalDateTime.now(), null, null));
+        status.add(new Status(2L, "Indisponível", LocalDateTime.now(), null, null));
 
         return status;
     }
