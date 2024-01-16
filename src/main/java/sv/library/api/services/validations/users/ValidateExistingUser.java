@@ -1,4 +1,4 @@
-package sv.library.api.services.validations;
+package sv.library.api.services.validations.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

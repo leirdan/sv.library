@@ -15,8 +15,8 @@ import sv.library.api.dto.loans.IndexLoanDTO;
 import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.repository.ILoanRepository;
 import sv.library.api.services.repository.IUserRepository;
-import sv.library.api.services.validations.ValidateDuplicateLoan;
 import sv.library.api.services.validations.interfaces.IValidatorLoan;
+import sv.library.api.services.validations.loans.ValidateDuplicateLoan;
 
 @Service
 public class BookLoanService {
