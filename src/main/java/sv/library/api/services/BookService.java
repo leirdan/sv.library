@@ -33,6 +33,12 @@ public class BookService {
     @Autowired
     private List<IValidatorBook> validatorBooks;
 
+    public Book get(Long id) {
+        validatorBooks.forEach(b -> b.validate(id));
+        Book book = bookRepository.findById(id).get();
+        return book.isActive() == true ? book : null;
+    }
+
     public Book create(CreateBookData data) {
         validatorGenre.forEach(g -> g.validate(data.genreId()));
         validatorStatus.forEach(s -> s.validate(data.statusId()));
