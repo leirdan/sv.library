@@ -22,7 +22,7 @@ public class Database {
         List<Genre> genres = new ArrayList<>();
         genres.add(new Genre(1L, "Fantasia", LocalDateTime.now(), null, null));
         genres.add(new Genre(2L, "Terror", LocalDateTime.now(), null, null));
-        genres.add(new Genre(3L, "Comédia", LocalDateTime.now(), null, null));
+        genres.add(new Genre(3L, "Comedia", LocalDateTime.now(), null, null));
 
         return genres;
     }
@@ -32,7 +32,7 @@ public class Database {
         List<Status> status = loadStatus();
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, "A Crônica do Matador do Rei", "Patrick Rothfuss", "Editora Arqueiro",
+        books.add(new Book(1L, "A Cronica do Matador do Rei", "Patrick Rothfuss", "Editora Arqueiro",
                 "2009",
                 LocalDateTime.now(), null, true, genres.get(0), status.get(0)));
         books.add(new Book(2L, "O Iluminado", "Stephen King", "Rocco", "1970", LocalDateTime.now(),
@@ -52,8 +52,8 @@ public class Database {
 
     public static List<Status> loadStatus() {
         List<Status> status = new ArrayList<Status>();
-        status.add(new Status(1L, "Disponível", LocalDateTime.now(), null, null));
-        status.add(new Status(2L, "Indisponível", LocalDateTime.now(), null, null));
+        status.add(new Status(1L, "Disponivel", LocalDateTime.now(), null, null));
+        status.add(new Status(2L, "Indisponivel", LocalDateTime.now(), null, null));
 
         return status;
     }
