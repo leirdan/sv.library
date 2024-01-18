@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sv.library.api.domain.Status;
-import sv.library.api.dto.status.CreateStatusData;
-import sv.library.api.dto.status.StatusData;
+import sv.library.api.dto.status.CreateStatusDTO;
+import sv.library.api.dto.status.StatusDTO;
 import sv.library.api.services.repository.IStatusRepository;
 
 @RestController
@@ -24,15 +24,15 @@ public class StatusController {
     private IStatusRepository _statusRepository;
 
     @GetMapping
-    public Page<StatusData> Index(Pageable page) {
+    public Page<StatusDTO> Index(Pageable page) {
         return _statusRepository
                 .findAll(page)
-                .map(StatusData::new);
+                .map(StatusDTO::new);
     }
 
     @PostMapping
     @Transactional
-    public void Create(@RequestBody @Valid CreateStatusData data) {
+    public void Create(@RequestBody @Valid CreateStatusDTO data) {
         _statusRepository.save(new Status(data.description()));
     }
 }

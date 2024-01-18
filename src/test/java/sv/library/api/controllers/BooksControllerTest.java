@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Genre;
 import sv.library.api.domain.Status;
-import sv.library.api.dto.books.CreateBookData;
-import sv.library.api.dto.books.DetailsBookData;
+import sv.library.api.dto.books.CreateBookDTO;
+import sv.library.api.dto.books.DetailsBookDTO;
 import sv.library.api.services.BookService;
 import sv.library.api.services.repository.IGenreRepository;
 import sv.library.api.services.repository.IStatusRepository;
@@ -55,9 +55,9 @@ public class BooksControllerTest {
         @MockBean
         private List<IValidatorStatus> validatorStatus;
         @Autowired
-        private JacksonTester<CreateBookData> jsonConverterCreate;
+        private JacksonTester<CreateBookDTO> jsonConverterCreate;
         @Autowired
-        private JacksonTester<DetailsBookData> jsonConverterDetails;
+        private JacksonTester<DetailsBookDTO> jsonConverterDetails;
 
         @Test
         @DisplayName("Deve devolver http 201 quando json eh valido")
@@ -68,8 +68,8 @@ public class BooksControllerTest {
 
                 Book book = new Book(1L, "1984", "George Orwell", "Planeta Magazine", "1948",
                                 LocalDateTime.now(), null, true, genre, status);
-                DetailsBookData bookDetails = new DetailsBookData(book);
-                CreateBookData bookCreate = new CreateBookData(book.getTitle(), book.getAuthor(), book.getPublisher(),
+                DetailsBookDTO bookDetails = new DetailsBookDTO(book);
+                CreateBookDTO bookCreate = new CreateBookDTO(book.getTitle(), book.getAuthor(), book.getPublisher(),
                                 book.getYear(), book.getGenre().getId(), book.getStatus().getId());
 
                 setup(genre, status);

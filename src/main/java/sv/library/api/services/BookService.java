@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import sv.library.api.domain.Book;
 import sv.library.api.domain.Genre;
 import sv.library.api.domain.Status;
-import sv.library.api.dto.books.CreateBookData;
-import sv.library.api.dto.books.UpdateBookData;
+import sv.library.api.dto.books.CreateBookDTO;
+import sv.library.api.dto.books.UpdateBookDTO;
 import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.repository.IGenreRepository;
 import sv.library.api.services.repository.IStatusRepository;
@@ -39,7 +39,7 @@ public class BookService {
         return book.isActive() == true ? book : null;
     }
 
-    public Book create(CreateBookData data) {
+    public Book create(CreateBookDTO data) {
         validatorGenre.forEach(g -> g.validate(data.genreId()));
         validatorStatus.forEach(s -> s.validate(data.statusId()));
 
@@ -56,7 +56,7 @@ public class BookService {
         }
     }
 
-    public Book update(UpdateBookData data) {
+    public Book update(UpdateBookDTO data) {
         Status status = null;
         Genre genre = null;
 

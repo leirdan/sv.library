@@ -2,7 +2,7 @@ package sv.library.api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import sv.library.api.dto.books.CreateBookData;
+import sv.library.api.dto.books.CreateBookDTO;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +38,7 @@ public class Book {
     @JoinColumn(name = "status_id")
     private Status status;
 
-    public Book(CreateBookData data, Status status, Genre genre) {
+    public Book(CreateBookDTO data, Status status, Genre genre) {
         this.title = data.title();
         this.author = data.author();
         this.publisher = data.publisher();

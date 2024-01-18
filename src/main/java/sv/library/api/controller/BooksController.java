@@ -13,10 +13,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sv.library.api.domain.Book;
-import sv.library.api.dto.books.BookData;
-import sv.library.api.dto.books.CreateBookData;
-import sv.library.api.dto.books.DetailsBookData;
-import sv.library.api.dto.books.UpdateBookData;
+import sv.library.api.dto.books.BookDTO;
+import sv.library.api.dto.books.CreateBookDTO;
+import sv.library.api.dto.books.DetailsBookDTO;
+import sv.library.api.dto.books.UpdateBookDTO;
 import sv.library.api.services.BookService;
 import sv.library.api.services.repository.IBookRepository;
 
@@ -33,39 +33,39 @@ public class BooksController {
     private BookService bookService;
 
     @GetMapping
-    public ResponseEntity<Page<BookData>> Index(Pageable page) {
-        Page<BookData> books = bookRepository
+    public ResponseEntity<Page<BookDTO>> Index(Pageable page) {
+        Page<BookDTO> books = bookRepository
                 .findAllByActiveTrue(page)
-                .map(BookData::new);
+                .map(BookDTO::new);
 
         return ResponseEntity.ok(books);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DetailsBookData> GetOne(@PathVariable Long id) {
+    public ResponseEntity<DetailsBookDTO> GetOne(@PathVariable Long id) {
         Book book = bookService.get(id);
 
-        return book == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok(new DetailsBookData(book));
+        return book == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok(new DetailsBookDTO(book));
     }
 
     @PostMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<DetailsBookData> Create(@RequestBody @Valid CreateBookData data,
+    public ResponseEntity<DetailsBookDTO> Create(@RequestBody @Valid CreateBookDTO data,
             UriComponentsBuilder builder) {
         Book book = bookService.create(data);
 
         URI uri = builder.path("/livros/{id}").buildAndExpand(book.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DetailsBookData(book));
+        return ResponseEntity.created(uri).body(new DetailsBookDTO(book));
     }
 
     @PutMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<DetailsBookData> Update(@RequestBody @Valid UpdateBookData data) {
+    public ResponseEntity<DetailsBookDTO> Update(@RequestBody @Valid UpdateBookDTO data) {
         Book book = bookService.update(data);
-        return ResponseEntity.ok(new DetailsBookData(book));
+        return ResponseEntity.ok(new DetailsBookDTO(book));
     }
 
     @DeleteMapping("/{id}")
@@ -80,7 +80,7 @@ public class BooksController {
     @PutMapping("/{id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<DetailsBookData> Activate(@PathVariable Long id) {
+    public ResponseEntity<DetailsBookDTO> Activate(@PathVariable Long id) {
         Book book = bookRepository.getReferenceById(id);
 
         if (!book.isActive()) {
@@ -88,7 +88,7 @@ public class BooksController {
             book.setUpdatedAt(LocalDateTime.now());
         }
 
-        return ResponseEntity.ok(new DetailsBookData(book));
+        return ResponseEntity.ok(new DetailsBookDTO(book));
 
     }
 

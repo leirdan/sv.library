@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import sv.library.api.dto.users.UserData;
+import sv.library.api.dto.users.UserDTO;
 import sv.library.api.services.repository.IUserRepository;
 
 @RestController
@@ -20,9 +20,9 @@ public class UsersController {
     private IUserRepository _userRepository;
 
     @GetMapping
-    public Page<UserData> Index(Pageable page) {
+    public Page<UserDTO> Index(Pageable page) {
         return _userRepository
                 .findAll(page)
-                .map(UserData::new);
+                .map(UserDTO::new);
     }
 }

@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sv.library.api.domain.Role;
 import sv.library.api.domain.User;
-import sv.library.api.dto.auth.CreateLoginData;
-import sv.library.api.dto.auth.TokenData;
-import sv.library.api.dto.users.CreateUserData;
+import sv.library.api.dto.auth.CreateLoginDTO;
+import sv.library.api.dto.auth.TokenDTO;
+import sv.library.api.dto.users.CreateUserDTO;
 import sv.library.api.infra.SecurityConfiguration;
 import sv.library.api.services.TokenService;
 import sv.library.api.services.impl.UserDetailsImpl;
@@ -45,19 +45,18 @@ public class AuthController {
     private IRoleRepository roleRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenData> login(@RequestBody @Valid CreateLoginData data) {
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid CreateLoginDTO data) {
         var authToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         Authentication auth = authManager.authenticate(authToken);
 
         String jwtToken = tokenService.generateToken((UserDetailsImpl) auth.getPrincipal());
-        System.out.println(jwtToken);
 
-        return ResponseEntity.ok(new TokenData(jwtToken));
+        return ResponseEntity.ok(new TokenDTO(jwtToken));
     }
 
     @PostMapping("/cadastro")
     @Transactional
-    public void register(@RequestBody @Valid CreateUserData data) {
+    public void register(@RequestBody @Valid CreateUserDTO data) {
         List<Role> roles = new ArrayList<Role>();
         Role role = roleRepository.findByName(data.role());
         roles.add(role);

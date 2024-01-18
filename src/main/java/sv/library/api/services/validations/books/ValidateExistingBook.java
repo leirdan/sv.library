@@ -3,7 +3,7 @@ package sv.library.api.services.validations.books;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import sv.library.api.dto.books.BookData;
+import sv.library.api.dto.books.BookDTO;
 import sv.library.api.dto.loans.CreateLoanDTO;
 import sv.library.api.services.repository.IBookRepository;
 import sv.library.api.services.validations.interfaces.IValidatorBook;
@@ -23,7 +23,7 @@ public class ValidateExistingBook implements IValidatorLoan, IValidatorBook {
     }
 
     @Override
-    public void validate(BookData data) {
+    public void validate(BookDTO data) {
         if (!bookRepository.existsById(data.id())) {
             throw new ElementNotFoundOnDBException(String.format("Book with id %d doesn't exist!", data.id()));
         }

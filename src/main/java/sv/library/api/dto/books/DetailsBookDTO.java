@@ -4,7 +4,7 @@ import sv.library.api.domain.Book;
 
 import java.time.LocalDateTime;
 
-public record DetailsBookData(
+public record DetailsBookDTO(
         Long id,
         String title,
         String author,
@@ -15,7 +15,7 @@ public record DetailsBookData(
         boolean active,
         String genre,
         String status) {
-    public DetailsBookData(Book book) {
+    public DetailsBookDTO(Book book) {
         this(
                 book.getId(),
                 book.getTitle(),

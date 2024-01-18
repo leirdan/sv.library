@@ -2,11 +2,10 @@ package sv.library.api.dto.genre;
 
 import sv.library.api.domain.Genre;
 
-public record GenreData(
+public record GenreDTO(
         Long id,
-        String description
-) {
-    public GenreData(Genre genre) {
+        String description) {
+    public GenreDTO(Genre genre) {
         this(genre.getId(), genre.getDescription());
     }
 }

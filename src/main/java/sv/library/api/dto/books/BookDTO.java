@@ -2,7 +2,7 @@ package sv.library.api.dto.books;
 
 import sv.library.api.domain.Book;
 
-public record BookData(
+public record BookDTO(
         Long id,
         String title,
         String author,
@@ -10,7 +10,7 @@ public record BookData(
         String year,
         Long genreId,
         Long statusId) {
-    public BookData(Book book) {
+    public BookDTO(Book book) {
         this(book.getId(),
                 book.getTitle(),
                 book.getAuthor(),

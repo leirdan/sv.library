@@ -2,11 +2,10 @@ package sv.library.api.dto.status;
 
 import sv.library.api.domain.Status;
 
-public record StatusData(
+public record StatusDTO(
         Long id,
-        String description
-) {
-    public StatusData(Status status) {
+        String description) {
+    public StatusDTO(Status status) {
         this(status.getId(), status.getDescription());
     }
 }
