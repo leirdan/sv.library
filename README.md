@@ -114,6 +114,69 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Sv.Library:
 
 ## :book: Como executar
 
+#### Pré-requisitos
+
+Para compilar o projeto, é necessário que estejam previamente instalados o **[MySQL Community](https://dev.mysql.com/downloads/)** e o **[Java 17](https://docs.oracle.com/en/java/javase/17/)**, seja tanto o [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) quanto o [OpenJDK](https://adoptium.net/temurin/releases/). Adicionalmente, garanta que já foi criado um banco de dados para a API poder utilizar como fonte de dados, pois as _migrations_ gerenciam somente tabelas.
+
+#### 1. Clone o repositório
+
+Execute o comando no diretório desejado.
+
+```bash
+git clone https://github.com/leirdan/sv.library.git
+```
+
+#### 2. Entre no diretório do projeto
+
+```bash
+cd sv.library/
+```
+
+#### 3. Compile e gere um executável
+
+```bash
+./mvnw package
+```
+
+ou
+
+```bash
+mvn package
+```
+
+#### 4. Execute o arquivo `.jar`
+
+Com PowerShell:
+
+```powershell
+java "-Dspring.profiles.active=prod" "-DDATASOURCE_URL=[url do banco de dados]"
+"-DDATASOURCE_USERNAME=[usuário do banco de dados]"
+"-DDATASOURCE_PASSWORD=[senha do banco de dados]"
+-jar .\target\api-0.0.1-SNAPSHOT.jar
+```
+
+Com Bash:
+
+```bash
+java -Dspring.profiles.active=prod
+-DDATASOURCE_URL=[url do banco de dados]
+-DDATASOURCE_USERNAME=[usuário do banco de dados]
+-DDATASOURCE_PASSWORD=[senha do banco de dados]
+-jar target/api-0.0.1-SNAPSHOT.jar
+```
+
+#### 5. Utilize
+
+Acesse a url `http://localhost:8080/swagger-ui.html` e teste as funcionalidades.
+
+##### Observação
+
+Caso prefira, edite o arquivo `application-prod.properties` em `src/main/resources` com as informações passadas anteriormente passadas nos parâmetros. Assim, para iniciar a API posteriormente basta compilar e executar:
+
+```bash
+java -Dspring.profiles.active=prod -jar target/api-0.0.1-SNAPSHOT.jar
+```
+
 ## :mag: Observações
 
 - Vários métodos e classes, especialmente as com prefixo `Genre` e `Status`, estão com código "desatualizado" que será refatorado e melhorado assim que possível, incluindo classes `Service` e melhorias de lógica;
