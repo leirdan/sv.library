@@ -30,11 +30,11 @@ public class User {
     @Column(name = "hash_senha", nullable = false)
     private String password;
     @Column(name = "criado_em", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     @Column(name = "atualizado_em")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
     @Column(name = "ativo")
-    private boolean Active = true;
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "usuariosroles", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
