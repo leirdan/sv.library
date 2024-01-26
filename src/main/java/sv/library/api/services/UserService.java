@@ -51,4 +51,7 @@ public class UserService {
         return user;
     }
 
+    public boolean isUserCreated(User user) {
+        return userRepository.findByLogin(user.getLogin()).isPresent();
+    }
 }

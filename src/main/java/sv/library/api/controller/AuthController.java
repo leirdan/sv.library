@@ -2,6 +2,7 @@ package sv.library.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.xml.bind.ValidationException;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -23,8 +24,10 @@ import sv.library.api.domain.User;
 import sv.library.api.dto.auth.CreateLoginDTO;
 import sv.library.api.dto.auth.TokenDTO;
 import sv.library.api.dto.users.CreateUserDTO;
+import sv.library.api.dto.users.DetailsUserDTO;
 import sv.library.api.infra.SecurityConfiguration;
 import sv.library.api.services.TokenService;
+import sv.library.api.services.UserService;
 import sv.library.api.services.impl.UserDetailsImpl;
 import sv.library.api.services.repository.IRoleRepository;
 import sv.library.api.services.repository.IUserRepository;
@@ -43,6 +46,8 @@ public class AuthController {
     private IUserRepository userRepository;
     @Autowired
     private IRoleRepository roleRepository;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid CreateLoginDTO data) {
@@ -56,7 +61,7 @@ public class AuthController {
 
     @PostMapping("/cadastro")
     @Transactional
-    public void register(@RequestBody @Valid CreateUserDTO data) {
+    public ResponseEntity<DetailsUserDTO> register(@RequestBody @Valid CreateUserDTO data) throws ValidationException {
         List<Role> roles = new ArrayList<Role>();
         Role role = roleRepository.findByName(data.role());
         roles.add(role);
@@ -66,10 +71,18 @@ public class AuthController {
                 .name(data.name())
                 .login(data.login())
                 .password(securityConfig.encoder().encode(data.password()))
+                .active(true)
                 .roles(roles)
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        userRepository.save(newUser);
+        boolean result = userService.isUserCreated(newUser);
+
+        if (result == false) {
+            userRepository.save(newUser);
+            return ResponseEntity.ok(new DetailsUserDTO(newUser));
+        } else {
+            throw new ValidationException("User already created!");
+        }
     }
 }
